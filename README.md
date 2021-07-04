@@ -19,7 +19,7 @@ com.vehicle.registration.VehicleRegistrationApplication</code>
 
 ## Swagger API documentation 
 The Swagger API specification JSON is in the below file.<br>
-[swagger/vehicle-registration-0.0.1.json](swagger/vehicle-registration-0.0.1.json) <br>
+https://github.com/balajit123/vehicle-registration/blob/main/src/main/resources/swagger/vehicle-registration-0.0.1.json <br>
 Access the swagger api documentation from the localhost url while the application is running.<br>
 http://localhost:8080/swagger-ui.html#/vehicle-registration-controller
 
@@ -33,7 +33,7 @@ curl --location --request POST 'http://localhost:8080/vehicle-registration/creat
    "lastName": "Bob"
 }'
 </code>
-
+<br>
 * Create Vehicle <br>
 <code>
 curl --location --request POST 'http://localhost:8080/vehicle-registration/create-vehicle' \
@@ -42,7 +42,7 @@ curl --location --request POST 'http://localhost:8080/vehicle-registration/creat
    "registrationNumber": "ASD-89P"
 }'
 </code>
-
+<br>
 * Link Person to Vehicle <br>
 <code>
 curl --location --request PATCH 'http://localhost:8080/vehicle-registration/link-person-to-vehicle' \
@@ -53,7 +53,7 @@ curl --location --request PATCH 'http://localhost:8080/vehicle-registration/link
    "registrationNumber": "ASD-89P"
 }'
 </code>
-
+<br>
 * Unlink Person from Vehicle <br>
 <code>
 curl --location --request DELETE 'http://localhost:8080/vehicle-registration/unlink-person-from-vehicle' \
@@ -64,9 +64,8 @@ curl --location --request DELETE 'http://localhost:8080/vehicle-registration/unl
    "registrationNumber": "ASD-89P"
 }'
 </code>
-
+<br>
 * Get Person Vehicle Registrations <br>
 <code>
 curl --location --request GET 'http://localhost:8080/vehicle-registration/get-person-vehicle-registrations?firstName=John&lastName=Bob'
 </code>
-
