@@ -1,0 +1,73 @@
+<?xml version="1.0" ?>
+
+<databaseChangeLog
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+    <changeSet id="create_vr_schema" author="Balaji.Thennarangam">
+        <comment>Create vr schema</comment>
+        <sql dbms="h2"
+             endDelimiter="\nGO"
+             splitStatements="true"
+             stripComments="true">
+            CREATE SCHEMA vr
+        </sql>
+    </changeSet>
+
+    <changeSet id="create_person_table" author="Balaji.Thennarangam">
+        <comment>Create person table</comment>
+        <createTable tableName="person" schemaName="vr">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" unique="true"/>
+            </column>
+            <column name="first_name" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="last_name" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+        <addUniqueConstraint tableName="person" schemaName="vr"
+                             columnNames="first_name,last_name"/>
+    </changeSet>
+
+    <changeSet id="create_vehicle_table" author="Balaji.Thennarangam">
+        <comment>Create vehicle table</comment>
+        <createTable tableName="vehicle" schemaName="vr">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" unique="true"/>
+            </column>
+            <column name="registration_number" type="varchar(10)" >
+                <constraints unique="true" nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="create_person_vehicle_table" author="Balaji.Thennarangam">
+        <comment>Create person_vehicle table</comment>
+        <createTable tableName="person_vehicle" schemaName="vr">
+            <column name="id" type="bigint" autoIncrement="true" />
+            <column name="person_id" type="bigint">
+                <constraints nullable="false" />
+            </column>
+            <column name="registration_number" type="varchar(10)" >
+                <constraints unique="true" nullable="false"/>
+            </column>
+        </createTable>
+        <addUniqueConstraint tableName="person_vehicle" schemaName="vr"
+                             columnNames="person_id,registration_number"/>
+        <addForeignKeyConstraint baseTableName="person_vehicle" baseTableSchemaName="vr"
+                                 baseColumnNames="person_id"
+                                 constraintName="FK_person_vehicle_to_person"
+                                 referencedTableName="person" referencedTableSchemaName="vr"
+                                 referencedColumnNames="id" />
+        <addForeignKeyConstraint baseTableName="person_vehicle" baseTableSchemaName="vr"
+                                 baseColumnNames="registration_number"
+                                 constraintName="FK_person_vehicle_to_vehicle"
+                                 referencedTableName="vehicle" referencedTableSchemaName="vr"
+                                 referencedColumnNames="registration_number" />
+    </changeSet>
+
+
+</databaseChangeLog>

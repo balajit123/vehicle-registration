@@ -1,0 +1,11 @@
+<?xml version="1.0" ?>
+<databaseChangeLog
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    
+    <include file="db/changelog/0.0.1.create_vehicle_registration_tables.xml" />
+
+
+</databaseChangeLog>
+

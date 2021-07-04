@@ -1,0 +1,328 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "API for handling vehicle registration.",
+    "version": "1.0",
+    "title": "Vehicle Registration API"
+  },
+  "host": "localhost:8080",
+  "basePath": "/",
+  "tags": [
+    {
+      "name": "vehicle-registration-controller",
+      "description": "Vehicle Registration Controller"
+    }
+  ],
+  "paths": {
+    "/vehicle-registration/create-person": {
+      "post": {
+        "tags": [
+          "vehicle-registration-controller"
+        ],
+        "summary": "Create a person",
+        "operationId": "createPersonUsingPOST",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "personRequest",
+            "description": "personRequest",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/PersonRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/CreatePersonResponse"
+            }
+          },
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/vehicle-registration/create-vehicle": {
+      "post": {
+        "tags": [
+          "vehicle-registration-controller"
+        ],
+        "summary": "Create a vehicle",
+        "operationId": "createVehicleUsingPOST",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "vehicleRequest",
+            "description": "vehicleRequest",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/VehicleRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/CreateVehicleResponse"
+            }
+          },
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/vehicle-registration/link-person-to-vehicle": {
+      "patch": {
+        "tags": [
+          "vehicle-registration-controller"
+        ],
+        "summary": "Link a person to a vehicle",
+        "operationId": "linkPersonToVehicleUsingPATCH",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "personVehicleRequest",
+            "description": "personVehicleRequest",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/PersonVehicleRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/LinkPersonToVehicleResponse"
+            }
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/vehicle-registration/unlink-person-from-vehicle": {
+      "delete": {
+        "tags": [
+          "vehicle-registration-controller"
+        ],
+        "summary": "Unlink a person from a vehicle",
+        "operationId": "unLinkPersonFromVehicleUsingDELETE",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "personVehicleRequest",
+            "description": "personVehicleRequest",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/PersonVehicleRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/LinkPersonToVehicleResponse"
+            }
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/vehicle-registration/get-person-vehicle-registrations": {
+      "get": {
+        "tags": [
+          "vehicle-registration-controller"
+        ],
+        "summary": "Get person vehicle registrations",
+        "operationId": "getPersonVehicleRegistrationsUsingGET",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "firstName",
+            "in": "query",
+            "description": "firstName",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "lastName",
+            "in": "query",
+            "description": "lastName",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/PersonVehicleResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "CreatePersonResponse": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": [
+            "ERROR",
+            "SUCCESS"
+          ]
+        },
+        "statusReason": {
+          "type": "string"
+        }
+      },
+      "title": "CreatePersonResponse"
+    },
+    "CreateVehicleResponse": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": [
+            "ERROR",
+            "SUCCESS"
+          ]
+        },
+        "statusReason": {
+          "type": "string"
+        }
+      },
+      "title": "CreateVehicleResponse"
+    },
+    "LinkPersonToVehicleResponse": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": [
+            "ERROR",
+            "SUCCESS"
+          ]
+        },
+        "statusReason": {
+          "type": "string"
+        }
+      },
+      "title": "LinkPersonToVehicleResponse"
+    },
+    "PersonRequest": {
+      "type": "object",
+      "properties": {
+        "firstName": {
+          "type": "string"
+        },
+        "lastName": {
+          "type": "string"
+        }
+      },
+      "title": "PersonRequest"
+    },
+    "PersonVehicleRequest": {
+      "type": "object",
+      "properties": {
+        "firstName": {
+          "type": "string"
+        },
+        "lastName": {
+          "type": "string"
+        },
+        "registrationNumber": {
+          "type": "string"
+        }
+      },
+      "title": "PersonVehicleRequest"
+    },
+    "VehicleRequest": {
+      "type": "object",
+      "properties": {
+        "registrationNumber": {
+          "type": "string"
+        }
+      },
+      "title": "VehicleRequest"
+    },
+    "PersonVehicleResponse": {
+      "type": "object",
+      "properties": {
+        "personVehicles": {
+          "$ref": "#/definitions/PersonVehicles"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "ERROR",
+            "SUCCESS"
+          ]
+        },
+        "statusReason": {
+          "type": "string"
+        }
+      },
+      "title": "PersonVehicleResponse"
+    }
+  }
+}
