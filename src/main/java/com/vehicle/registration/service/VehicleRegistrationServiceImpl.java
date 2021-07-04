@@ -51,6 +51,7 @@ public class VehicleRegistrationServiceImpl implements VehicleRegistrationServic
             response.setStatusReason("Person created successfully");
             return response;
         } catch (DataIntegrityViolationException e) {
+            log.error("Error creating the person", e);
             response.setStatus(ResponseStatus.ERROR);
             response.setStatusReason("Duplicate Person");
             return response;
@@ -67,6 +68,7 @@ public class VehicleRegistrationServiceImpl implements VehicleRegistrationServic
             response.setStatusReason("Vehicle created successfully");
             return response;
         } catch (DataIntegrityViolationException e) {
+            log.error("Error creating the vehicle", e);
             response.setStatus(ResponseStatus.ERROR);
             response.setStatusReason("Duplicate Vehicle");
             return response;
@@ -86,6 +88,7 @@ public class VehicleRegistrationServiceImpl implements VehicleRegistrationServic
                 response.setStatus(ResponseStatus.SUCCESS);
                 response.setStatusReason("Person vehicle link created successfully");
             } catch (DataIntegrityViolationException e) {
+                log.error("Error linking person to vehicle", e);
                 response.setStatus(ResponseStatus.ERROR);
                 response.setStatusReason("Duplicate person vehicle link");
             }
@@ -93,6 +96,7 @@ public class VehicleRegistrationServiceImpl implements VehicleRegistrationServic
             response.setStatus(ResponseStatus.ERROR);
             String reason = null == person ? "Person not found" : "Vehicle not found";
             response.setStatusReason(reason);
+            log.error("Error linking person: Reason: {}",reason);
         }
         return response;
     }
@@ -111,14 +115,17 @@ public class VehicleRegistrationServiceImpl implements VehicleRegistrationServic
                     response.setStatus(ResponseStatus.SUCCESS);
                     response.setStatusReason("Person vehicle unlink successful");
                 } else {
+                    log.error("Error unlinking person from vehicle: Reason: Person vehicle link not found");
                     response.setStatus(ResponseStatus.ERROR);
                     response.setStatusReason("Person vehicle link not found");
                 }
             } else {
+                log.error("Error unlinking person from vehicle: Reason: Person not found");
                 response.setStatus(ResponseStatus.ERROR);
                 response.setStatusReason("Person not found");
             }
         } catch (DataIntegrityViolationException e) {
+            log.error("Error unlinking person from vehicle", e);
             response.setStatus(ResponseStatus.ERROR);
             response.setStatusReason("Person vehicle unlink was unsuccessful");
             return response;
@@ -133,6 +140,7 @@ public class VehicleRegistrationServiceImpl implements VehicleRegistrationServic
             Person person = personRepository.findByFirstNameAndLastName(firstName, lastName);
             if(null == person || null == person.getPersonVehicle()
                     || person.getPersonVehicle().isEmpty()) {
+                log.error("Error getting person vehicle registration: Reason: Person-vehicle registration not found");
                 response.setStatus(ResponseStatus.ERROR);
                 response.setStatusReason("Person-vehicle registration not found");
             } else {
@@ -142,6 +150,7 @@ public class VehicleRegistrationServiceImpl implements VehicleRegistrationServic
             }
             return response;
         } catch (DataIntegrityViolationException e) {
+            log.error("Error getting person vehicle registration" ,e);
             response.setStatus(ResponseStatus.ERROR);
             response.setStatusReason("Person vehicle unlink was unsuccessful");
             return response;

@@ -40,6 +40,7 @@ public class VehicleRegistrationController {
             @RequestBody PersonRequest personRequest) {
 
         if(!isValidPersonRequest(personRequest)) {
+            log.error("Error creating person: Invalid request");
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         CreatePersonResponse response = vehicleRegistrationService.createPerson(personRequest);
@@ -57,6 +58,7 @@ public class VehicleRegistrationController {
             @RequestBody VehicleRequest vehicleRequest) {
 
         if(!isValidVehicleRequest(vehicleRequest)) {
+            log.error("Error creating vehicle: Invalid request");
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         CreateVehicleResponse response = vehicleRegistrationService.createVehicle(vehicleRequest);
@@ -74,6 +76,7 @@ public class VehicleRegistrationController {
             @RequestBody PersonVehicleRequest personVehicleRequest) {
 
         if(!isValidPersonVehicleRequest(personVehicleRequest)) {
+            log.error("Error linking person to vehicle: Invalid request");
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         LinkPersonToVehicleResponse response = vehicleRegistrationService
@@ -88,6 +91,7 @@ public class VehicleRegistrationController {
             @RequestBody PersonVehicleRequest personVehicleRequest) {
 
         if(!isValidPersonVehicleRequest(personVehicleRequest)) {
+            log.error("Error unlinking person from vehicle: Invalid request");
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         LinkPersonToVehicleResponse response = vehicleRegistrationService
@@ -102,6 +106,7 @@ public class VehicleRegistrationController {
             @RequestParam String firstName, @RequestParam String lastName) {
 
         if(!isValidGetPersonVehicleRequest(firstName, lastName)) {
+            log.error("Error getting person vehicle registrations: Invalid request");
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         PersonVehicleResponse response = vehicleRegistrationService
