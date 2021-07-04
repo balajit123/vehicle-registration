@@ -76,19 +76,25 @@ public class VehicleRegistrationServiceImpl implements VehicleRegistrationServic
     @Override
     public LinkPersonToVehicleResponse linkPersonToVehicle(PersonVehicleRequest personVehicleRequest) {
         Person person = personRepository.findByFirstNameAndLastName(personVehicleRequest.getFirstName(), personVehicleRequest.getLastName());
+        Vehicle vehicle = vehicleRepository.findByRegistrationNumber(personVehicleRequest.getRegistrationNumber());
         final LinkPersonToVehicleResponse response = LinkPersonToVehicleResponse.builder().build();
-        PersonVehicle personVehicle = new PersonVehicleMapper().apply(personVehicleRequest);
-        personVehicle.setPersonId(person.getId());
-        try {
-            personVehicleRepository.save(personVehicle);
-            response.setStatus(ResponseStatus.SUCCESS);
-            response.setStatusReason("Person vehicle link created successfully");
-            return response;
-        } catch (DataIntegrityViolationException e) {
+        if (null != person && null != vehicle) {
+            PersonVehicle personVehicle = new PersonVehicleMapper().apply(personVehicleRequest);
+            personVehicle.setPersonId(person.getId());
+            try {
+                personVehicleRepository.save(personVehicle);
+                response.setStatus(ResponseStatus.SUCCESS);
+                response.setStatusReason("Person vehicle link created successfully");
+            } catch (DataIntegrityViolationException e) {
+                response.setStatus(ResponseStatus.ERROR);
+                response.setStatusReason("Duplicate person vehicle link");
+            }
+        } else {
             response.setStatus(ResponseStatus.ERROR);
-            response.setStatusReason("Duplicate person vehicle link");
-            return response;
+            String reason = null == person ? "Person not found" : "Vehicle not found";
+            response.setStatusReason(reason);
         }
+        return response;
     }
 
     @Override
@@ -97,16 +103,26 @@ public class VehicleRegistrationServiceImpl implements VehicleRegistrationServic
         Person person = personRepository.findByFirstNameAndLastName(personVehicleRequest.getFirstName(), personVehicleRequest.getLastName());
         LinkPersonToVehicleResponse response = LinkPersonToVehicleResponse.builder().build();
         try {
-            PersonVehicle personVehicle = personVehicleRepository
-                    .findByPersonIdAndRegistrationNumber(person.getId(), personVehicleRequest.getRegistrationNumber());
-            personVehicleRepository.deletePersonVehicleLink(personVehicle.getId());
+            if (null != person) {
+                PersonVehicle personVehicle = personVehicleRepository
+                        .findByPersonIdAndRegistrationNumber(person.getId(), personVehicleRequest.getRegistrationNumber());
+                if (null != personVehicle) {
+                    personVehicleRepository.deletePersonVehicleLink(personVehicle.getId());
+                    response.setStatus(ResponseStatus.SUCCESS);
+                    response.setStatusReason("Person vehicle unlink successful");
+                } else {
+                    response.setStatus(ResponseStatus.ERROR);
+                    response.setStatusReason("Person vehicle link not found");
+                }
+            } else {
+                response.setStatus(ResponseStatus.ERROR);
+                response.setStatusReason("Person not found");
+            }
         } catch (DataIntegrityViolationException e) {
             response.setStatus(ResponseStatus.ERROR);
             response.setStatusReason("Person vehicle unlink was unsuccessful");
             return response;
         }
-        response.setStatus(ResponseStatus.SUCCESS);
-        response.setStatusReason("Person vehicle unlink successful");
         return response;
     }
 
@@ -115,7 +131,8 @@ public class VehicleRegistrationServiceImpl implements VehicleRegistrationServic
         PersonVehicleResponse response = PersonVehicleResponse.builder().build();
         try {
             Person person = personRepository.findByFirstNameAndLastName(firstName, lastName);
-            if(null == person) {
+            if(null == person || null == person.getPersonVehicle()
+                    || person.getPersonVehicle().isEmpty()) {
                 response.setStatus(ResponseStatus.ERROR);
                 response.setStatusReason("Person-vehicle registration not found");
             } else {

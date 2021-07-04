@@ -88,6 +88,8 @@ public class VehicleRegistrationServiceTest {
         // Arrange
         when(personRepository.findByFirstNameAndLastName(anyString(), anyString()))
                 .thenReturn(Person.builder().id(1L).build());
+        when(vehicleRepository.findByRegistrationNumber(anyString()))
+                .thenReturn(Vehicle.builder().registrationNumber("YER-76L").build());
         PersonVehicleRequest personVehicleRequest = PersonVehicleRequest.builder()
                 .firstName("Bob")
                 .lastName("Alex")
